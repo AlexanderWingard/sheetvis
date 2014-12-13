@@ -72,6 +72,12 @@ function draw(data) {
         .attr("class", "line")
         .attr("stroke", function(d) { return colors(d)})
 
+    graphEnter.append("text")
+        .attr("class", "last")
+        .attr("fill", function(d) { return colors(d) })
+        .attr("x", 3)
+        .attr("dy", ".35em")
+
     //Graphs update
     graphs.attr("transform", function(d) { return "translate(0," + graphPos(d) + ")"})
         .each(function(col, i) {
@@ -85,5 +91,10 @@ function draw(data) {
 
             g.select(".line")
                 .attr("d", line(defined))
+
+            var last = defined[defined.length - 1]
+            g.select(".last")
+                .attr("transform", "translate(" + x(last[dateCol]) + "," + y(last[col]) + ")")
+                .text(last[col])
         })
 }
