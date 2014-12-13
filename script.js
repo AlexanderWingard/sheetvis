@@ -34,7 +34,7 @@ d3.csv(url, function(d) {
     }
     return d
 }, function(error, d){
-    data = d
+    data = d.sort(function(a,b) {return a[dateCol].getTime() - b[dateCol].getTime()})
     draw(data)
 })
 
