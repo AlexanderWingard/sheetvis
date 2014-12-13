@@ -2,9 +2,23 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 </head>
 <body>
+<input id="doclink" type="text" value="https://docs.google.com/spreadsheet/pub?key=0AkoRtgTW4zn8dFhhZ2JQenJGb1kwWFNCMHNyeUhZWEE&single=true&gid=0&output=csv"/>
+<button onclick="go()">Go</button>
 </body>
-<script src="script.js" charset="utf-8"></script>
+<script>
+function go() {
+    var input = document.getElementById("doclink")
+    var url = input.value
+
+    var regex = /key=([a-z0-9]+)/i
+    var match = url.match(regex)
+    if(match != null) {
+        window.location.href = "view.html#" + match[1]
+    } else {
+        console.log("nay")
+    }
+}
+</script>
 </html>

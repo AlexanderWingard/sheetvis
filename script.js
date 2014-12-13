@@ -1,7 +1,4 @@
 // Data info
-//var url = 'https://docs.google.com/spreadsheet/pub?key=0AkoRtgTW4zn8dE42SWZnTVlqN0Z3U0JnZ1lVZTgtQnc&single=true&gid=0&output=csv'
-var url = 'https://docs.google.com/spreadsheet/pub?key=0AkoRtgTW4zn8dFhhZ2JQenJGb1kwWFNCMHNyeUhZWEE&single=true&gid=0&output=csv'
-
 var dateCol = "Date"
 var dataCols = ["kH", "Ca", "Mg"]
 var data = []
@@ -18,25 +15,38 @@ var x = d3.time.scale()
 var y = d3.scale.linear()
 var yAxis = d3.svg.axis().scale(y).ticks(4).orient("left")
 var graphPos = d3.scale.ordinal()
-
 var line = d3.svg.line()
     .x(function(d) { return x(d[dateCol]); })
-
 var colors = d3.scale.category10()
 
-d3.csv(url, function(d) {
-    for(var key in d) {
-        if(key.toUpperCase() == "DATE") {
-            d[key] = new Date(d[key])
-        } else if (key.toUpperCase() != "COMMENT") {
-            d[key] = parseFloat(d[key])
+// Get data
+if(window.location.hash.length < 2) {
+    display_error("No key specified")
+} else {
+    var key = window.location.hash.slice(1)
+    var url = 'https://docs.google.com/spreadsheet/pub?key=' + key + '&single=true&gid=0&output=csv'
+    d3.csv(url, function(d) {
+        for(var key in d) {
+            if(key.toUpperCase() == "DATE") {
+                d[key] = new Date(d[key])
+            } else if (key.toUpperCase() != "COMMENT") {
+                d[key] = parseFloat(d[key])
+            }
         }
-    }
-    return d
-}, function(error, d){
-    data = d.sort(function(a,b) {return a[dateCol].getTime() - b[dateCol].getTime()})
-    draw(data)
-})
+        return d
+    }, function(error, d){
+        if(error) {
+            display_error("Could not get data from " + url)
+        } else {
+            data = d.sort(function(a,b) {return a[dateCol].getTime() - b[dateCol].getTime()})
+            draw(data)
+        }
+    })
+}
+
+function display_error(error) {
+    alert(error);
+}
 
 d3.select(window).on('resize', function() { draw(data) })
 
