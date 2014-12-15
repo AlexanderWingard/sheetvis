@@ -24,7 +24,7 @@ if(window.location.hash.length < 2) {
     display_error("No key specified")
 } else {
     var key = window.location.hash.slice(1)
-    var url = 'https://docs.google.com/spreadsheet/pub?key=' + key + '&single=true&gid=0&output=csv'
+    var url = "http://dev.axw.se/gdocs/" + key
     d3.csv(url, function(d) {
         for(var key in d) {
             if(key.toUpperCase() == "DATE") {
