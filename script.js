@@ -1,8 +1,3 @@
-// Data info
-var dateCol = "Date"
-var dataCols = ["kH", "Ca", "Mg"]
-var data = []
-
 // D3 setup
 var margin = {top: 20, right: 80, bottom: 30, left: 50}
 var svgElem = d3.select("body")
@@ -16,41 +11,13 @@ var y = d3.scale.linear()
 var yAxis = d3.svg.axis().scale(y).ticks(4).orient("left")
 var graphPos = d3.scale.ordinal()
 var line = d3.svg.line()
-    .x(function(d) { return x(d[dateCol]); })
 var colors = d3.scale.category10()
 
-// Get data
-if(window.location.hash.length < 2) {
-    display_error("No key specified")
-} else {
-    var key = window.location.hash.slice(1)
-    var url = "http://dev.axw.se/gdocs/" + key
-    d3.csv(url, function(d) {
-        for(var key in d) {
-            if(key.toUpperCase() == "DATE") {
-                d[key] = new Date(d[key])
-            } else if (key.toUpperCase() != "COMMENT") {
-                d[key] = parseFloat(d[key])
-            }
-        }
-        return d
-    }, function(error, d){
-        if(error) {
-            display_error("Could not get data from " + url)
-        } else {
-            data = d.sort(function(a,b) {return a[dateCol].getTime() - b[dateCol].getTime()})
-            draw(data)
-        }
-    })
-}
+function draw(sheet) {
+    var data = sheet.data;
+    var index = sheet.index;
+    var cols = sheet.cols;
 
-function display_error(error) {
-    alert(error);
-}
-
-d3.select(window).on('resize', function() { draw(data) })
-
-function draw(data) {
     // Find out size
     var w = parseInt(svgElem.style("width")) - margin.left - margin.right
     var h = parseInt(svgElem.style("height")) - margin.top - margin.bottom
@@ -58,16 +25,17 @@ function draw(data) {
 
     // Calculate size for each graph
     graphPos.rangeRoundBands([0, h], 0.2)
-        .domain(dataCols)
+        .domain(cols)
 
     // Set ranges of scales
     x.range([0, w])
-        .domain(d3.extent(data, function(d) { return d[dateCol] }))
+        .domain(d3.extent(data, function(d) { return d[index] }))
     y.range([graphPos.rangeBand(), 0])
+    line.x(function(d) { return x(d[index]) })
 
     // Graphs
     var graphs = svg.selectAll(".subgraph")
-        .data(dataCols)
+        .data(cols)
 
     // Graphs enter
     var graphEnter = graphs.enter()
@@ -104,7 +72,7 @@ function draw(data) {
 
             var last = defined[defined.length - 1]
             g.select(".last")
-                .attr("transform", "translate(" + x(last[dateCol]) + "," + y(last[col]) + ")")
+                .attr("transform", "translate(" + x(last[index]) + "," + y(last[col]) + ")")
                 .text(last[col])
         })
 }
