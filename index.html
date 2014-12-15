@@ -1,23 +1,76 @@
 <!doctype HTML>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="style.css">
+<style>
+h1 {
+    text-align: center;
+}
+body {
+    padding: 1em;
+    max-width: 800px;
+    margin: auto;
+}
+
+textarea {
+    width: 100%;
+    height: 5em;
+    margin-bottom: 1em;
+}
+button {
+    font-size: 1.3em;
+}
+#go {
+    text-align: center;
+}
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+td, th {
+    border: 1px solid black;
+    text-align: right;
+}
+</style>
 </head>
 <body>
-<input id="doclink" type="text" value="https://docs.google.com/spreadsheet/pub?key=0AkoRtgTW4zn8dFhhZ2JQenJGb1kwWFNCMHNyeUhZWEE&single=true&gid=0&output=csv"/>
+<h1>Get started:</h1>
+<h2>Step 1. Create spreadsheet</h2>
+<div id="instructions">
+  Create a new spreadsheet in <a href="http://drive.google.com">Google Drive</a><br/>
+  In the current version, it only works if columns have exactly these names:
+  <table>
+    <tr><th>Date</th><th>kH</th><th>Ca</th><th>Mg</th></tr>
+    <tr><td>2014-12-01</td><td>7.7</td><td>425</td><td>1350</td></tr>
+    <tr><td>2014-12-07</td><td>8.0</td><td>410</td><td>1320</td></tr>
+  </table>
+
+</div>
+<h2>Step 2. Share the sheet</h2>
+Press the blue share button and make sure to set <b>Anyone with the link can view</b>
+<p><small><i>Make sure the spreadsheet is using the new drive API by ensuring that the link looks something like:
+https://docs.google.com/spreadsheets/<b>d</b>/...</i></small></p>
+<h2>Step 3. Visualize</h2>
+<div id="go">
+Paste your share link here:
+<textarea id="doclink" wrap="soft">https://docs.google.com/spreadsheets/d/1EDLDCwq5uajVAlwtNZROxDReLCS0_tjAj5WVqByFMmw/edit?usp=sharing</textarea>
 <button onclick="go()">Go</button>
+</div>
 </body>
 <script>
 function go() {
     var input = document.getElementById("doclink")
     var url = input.value
 
-    var regex = /key=([a-z0-9]+)/i
+    var regex = /https:\/\/docs.google.com\/spreadsheets\/d\/(\S+)\//i
     var match = url.match(regex)
     if(match != null) {
         window.location.href = "view.html#" + match[1]
     } else {
-        console.log("nay")
+        alert("Invalid google drive URL")
     }
 }
 </script>
