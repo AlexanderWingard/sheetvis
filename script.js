@@ -61,7 +61,7 @@ function draw(sheet) {
         .each(function(col, i) {
             var g = d3.select(this)
             var defined = data.filter(function(d) { return !isNaN(d[col]) })
-            y.domain(d3.extent(defined, function(d) { return d[col]}))
+            y.domain(y_domain(defined, col))
             g.select(".axis")
                 .call(yAxis)
 
@@ -75,4 +75,12 @@ function draw(sheet) {
                 .attr("transform", "translate(" + x(last[index]) + "," + y(last[col]) + ")")
                 .text(last[col])
         })
+}
+
+function y_domain(data, col) {
+    var extent = d3.extent(data, function(d) { return d[col]})
+    if(extent[0] == extent[1]) {
+       extent[1] += 1; 
+    }
+    return extent
 }
