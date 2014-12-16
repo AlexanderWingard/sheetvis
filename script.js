@@ -16,7 +16,8 @@ var colors = d3.scale.category10()
 function draw(sheet) {
     var data = sheet.data;
     var index = sheet.index;
-    var cols = sheet.cols;
+    var cols = sheet.cols
+    var comments = sheet.comments;
 
     // Find out size
     var w = parseInt(svgElem.style("width")) - margin.left - margin.right
