@@ -1,16 +1,75 @@
 body {
     font: 10px sans-serif;
     margin: 0;
+    overflow: hidden;
 }
-#graph {
+
+svg {
     width: 100%;
     height: 100%;
+}
+#graph {
     position: absolute;
+    left: 0;
+    right: 300px;
+    top: 0;
+    bottom: 0;
+}
+#comments {
+    background-color: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    width: 300px;
+    right: 0;
+    bottom: 0;
+    top: 0;
 }
 
+td {
+    vertical-align: top;
+}
+
+td:nth-child(1) {
+    white-space: nowrap;
+}
+
+.comment_selected {
+    background-color: rgba(230, 230, 230, 0.9)
+}
+
+#toggle_comments {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    visibility: hidden;
+}
+
+@media (max-width: 700px) {
+    #graph {
+        right: 0;
+    }
+    #toggle_comments {
+        visibility: visible;
+    }
+    #comments {
+        left: 0;
+        width: auto;
+        visibility: hidden;
+    }
+    #comments table{
+        margin: auto;
+        font-size: 1.3em;
+    }
+    #comments.show {
+        visibility: visible;
+    }
+}
+
+.vr {
+    stroke: black;
+    shape-rendering: crispEdges;
+}
 path.line {
     fill: none;
-
     stroke-width: 3.5px;
 }
 

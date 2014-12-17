@@ -1,4 +1,4 @@
-sheet = {data : [], index : "", cols : []}
+sheet = {data : [], index : "", cols : [], comments : []}
 
 if(window.location.hash.length < 2) {
     display_error("No key specified")
@@ -34,12 +34,20 @@ function parse_sheet(csv) {
 
     // Convert strings and list columns
     var colset =  {}
+    var comments = []
     csv.forEach(function(d) {
         d[index] = new Date(d[index])
         for(var key in d) {
             if (key !== index) {
-                colset[key] = true
-                d[key] = parseFloat(d[key])
+                if(/^\s*[0-9\.,\+\-]+\s*$/gm.test(d[key])) {
+                    colset[key] = true
+                    d[key] = parseFloat(d[key])
+                } else {
+                    if(d[key].length > 0) {
+                        comments.push({index: d[index], value: d[key]})
+                    }
+                    d[key] = NaN
+                }
             }
         }
     })
@@ -52,9 +60,10 @@ function parse_sheet(csv) {
     }
     // Sort data
     csv.sort(function(a,b) {return a[index].getTime() - b[index].getTime()})
+    comments.sort(function(a,b) {return b.index.getTime() - a.index.getTime()})
 
     // Create sheet
-    sheet = {data : csv, index : index, cols : Object.keys(colset)}
+    sheet = {data : csv, index : index, cols : Object.keys(colset), comments: comments}
 }
 
 function display_error(error) {
