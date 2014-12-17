@@ -11,6 +11,7 @@ function toggle_comments() {
 }
 
 var svg = svgElem.append("g")
+var commentTab = commentElem.append("table")
 
 // Scales
 var x = d3.time.scale()
@@ -83,6 +84,24 @@ function draw(sheet) {
                 .attr("transform", "translate(" + x(last[index]) + "," + y(last[col]) + ")")
                 .text(last[col])
         })
+    // Comments
+    var commentSel = commentTab.selectAll("tr")
+        .data(comments)
+
+    commentSel.enter()
+        .append("tr")
+        .selectAll("td")
+        .data(function(d) {
+            return [d.index, d.value]
+        })
+        .enter()
+        .append("td")
+        .text(function(d, i) {
+            if (i == 0) {
+                return moment(d).fromNow()
+            } else {
+                return d
+            }})
 }
 
 function y_domain(data, col) {

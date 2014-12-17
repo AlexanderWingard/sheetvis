@@ -44,6 +44,10 @@ svg {
         width: auto;
         visibility: hidden;
     }
+    #comments table{
+        margin: auto;
+        font-size: 1.3em;
+    }
     #comments.show {
         visibility: visible;
     }
