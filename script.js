@@ -12,6 +12,8 @@ function toggle_comments() {
 
 var svg = svgElem.append("g")
 var commentTab = commentElem.append("table")
+var vrDataSel = [];
+var vrData = [];
 
 // Scales
 var x = d3.time.scale()
@@ -90,7 +92,27 @@ function draw(sheet) {
 
     commentSel.enter()
         .append("tr")
-        .selectAll("td")
+        .on("click", function(d) {
+            if(vrDataSel[0] == d.index) {
+                vrDataSel = []
+            } else {
+                vrDataSel = [d.index]
+            }
+            commentElem.classed("show", false)
+        })
+        .on("mouseenter", function(d) {
+            vrData = [d.index]
+            draw(sheet)
+        })
+        .on("mouseleave", function(d) {
+            vrData = vrDataSel
+            draw(sheet)
+        })
+    commentSel.classed("comment_selected", function(d) {
+        return d.index == vrData[0]
+    })
+
+    commentSel.selectAll("td")
         .data(function(d) {
             return [d.index, d.value]
         })
@@ -102,6 +124,20 @@ function draw(sheet) {
             } else {
                 return d
             }})
+
+    // Vertical row
+    var vr = svg.selectAll(".vr")
+        .data(vrData)
+    
+    vr.enter()
+        .append("line")
+        .attr("class", "vr")
+        .attr("y1", 0)
+    vr.exit()
+        .remove()
+    vr.attr("y2", h)
+        .attr("x1", function(d) { return x(d) })
+        .attr("x2", function(d) { return x(d) })
 }
 
 function y_domain(data, col) {

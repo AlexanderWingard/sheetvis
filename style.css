@@ -16,12 +16,24 @@ svg {
     bottom: 0;
 }
 #comments {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
     position: absolute;
     width: 300px;
     right: 0;
     bottom: 0;
     top: 0;
+}
+
+td {
+    vertical-align: top;
+}
+
+td:nth-child(1) {
+    white-space: nowrap;
+}
+
+.comment_selected {
+    background-color: rgba(230, 230, 230, 0.9)
 }
 
 #toggle_comments {
@@ -39,7 +51,6 @@ svg {
         visibility: visible;
     }
     #comments {
-        opacity: 0.8;
         left: 0;
         width: auto;
         visibility: hidden;
@@ -51,6 +62,11 @@ svg {
     #comments.show {
         visibility: visible;
     }
+}
+
+.vr {
+    stroke: black;
+    shape-rendering: crispEdges;
 }
 path.line {
     fill: none;

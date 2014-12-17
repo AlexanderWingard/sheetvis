@@ -60,6 +60,7 @@ function parse_sheet(csv) {
     }
     // Sort data
     csv.sort(function(a,b) {return a[index].getTime() - b[index].getTime()})
+    comments.sort(function(a,b) {return b.index.getTime() - a.index.getTime()})
 
     // Create sheet
     sheet = {data : csv, index : index, cols : Object.keys(colset), comments: comments}
