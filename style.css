@@ -1,16 +1,55 @@
 body {
     font: 10px sans-serif;
     margin: 0;
+    overflow: hidden;
 }
-#graph {
+
+svg {
     width: 100%;
     height: 100%;
+}
+#graph {
     position: absolute;
+    left: 0;
+    right: 300px;
+    top: 0;
+    bottom: 0;
+}
+#comments {
+    background-color: white;
+    position: absolute;
+    width: 300px;
+    right: 0;
+    bottom: 0;
+    top: 0;
 }
 
+#toggle_comments {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    visibility: hidden;
+}
+
+@media (max-width: 700px) {
+    #graph {
+        right: 0;
+    }
+    #toggle_comments {
+        visibility: visible;
+    }
+    #comments {
+        opacity: 0.8;
+        left: 0;
+        width: auto;
+        visibility: hidden;
+    }
+    #comments.show {
+        visibility: visible;
+    }
+}
 path.line {
     fill: none;
-
     stroke-width: 3.5px;
 }
 

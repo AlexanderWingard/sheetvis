@@ -1,8 +1,15 @@
 // D3 setup
 var margin = {top: 20, right: 80, bottom: 30, left: 50}
-var svgElem = d3.select("body")
+var svgElem = d3.select("#graph")
     .append("svg")
-    .attr("id", "graph")
+var commentElem= d3.select("#comments")
+
+function toggle_comments() {
+    commentElem.classed("show", function(d) {
+        return !commentElem.classed("show")
+    })
+}
+
 var svg = svgElem.append("g")
 
 // Scales
