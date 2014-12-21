@@ -43,7 +43,7 @@ function parse_sheet(csv) {
                     colset[key] = true
                     d[key] = parseFloat(d[key])
                 } else {
-                    if(d[key].length > 0) {
+                    if(d[key] && d[key].length > 0) {
                         comments.push({index: d[index], value: d[key]})
                     }
                     d[key] = NaN
